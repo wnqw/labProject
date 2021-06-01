@@ -15,18 +15,18 @@ def main():
     people = getPeople(mypath)
 
     people_result = list()
-    for person in people:
-        person_dict = dbQueries(person)
-        if person_dict == {}:
-            print(person + " has empty dict")
-        print(person_dict)
-        people_result.append(person_dict)
+    # for person in people:
+    #     person_dict = dbQueries(person)
+    #     if person_dict == {}:
+    #         print(person + " has empty dict")
+    #     print(person_dict)
+    #     people_result.append(person_dict)
 
-    # person_dict = dbQuery("Melinda Gates")
-    # people_result.append(person_dict)
+    person_dict = dbQueries("Melinda Gates")
+    people_result.append(person_dict)
 
-    # for i in people_result:
-    #     print(i)
+    for i in people_result:
+        print(i)
 
 
 def getPeople(mypath):
@@ -105,7 +105,7 @@ def awardQuery(name):
 
 
 def dbQueries(name):
-    person_dict = {"name": "", "occupation_title": ("",""), "award": ""}
+    person_dict = {"name": "", "occupation": "", "award": ""}
 
     nameQ = nameQuery(name)
     for i in nameQ:
@@ -120,7 +120,7 @@ def dbQueries(name):
     occupationQ = occupationQuery(name)
     for j in occupationQ:
         if j["occupation"]["value"] != "":
-            occupation_dict = {"occupation_title": (j["occupation"]["value"], j["title"]["value"])}
+            occupation_dict = {"occupation": j["title"]["value"]}
             person_dict.update(occupation_dict)
             break
         break
