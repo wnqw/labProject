@@ -27,7 +27,6 @@ def main():
 
     # person_dict = dbQueries("Melinda Gates")
     # people_result.append(person_dict)
-
     # for i in people_result:
         # print(i)
 
