@@ -68,6 +68,8 @@ def occupationQuery(name):
     {
     ?name rdfs:label \"%s\"@en;
     dbo:occupation ?occupation .
+    
+    ?occupation dbo:title ?title .
     }
     ''' % name
     sparql.setQuery(query)
@@ -103,7 +105,7 @@ def awardQuery(name):
 
 
 def dbQueries(name):
-    person_dict = {"name": "", "occupation": "", "award": ""}
+    person_dict = {"name": "", "occupation_title": ("",""), "award": ""}
 
     nameQ = nameQuery(name)
     for i in nameQ:
@@ -118,7 +120,7 @@ def dbQueries(name):
     occupationQ = occupationQuery(name)
     for j in occupationQ:
         if j["occupation"]["value"] != "":
-            occupation_dict = {"occupation": j["occupation"]["value"]}
+            occupation_dict = {"occupation_title": (j["occupation"]["value"], j["title"]["value"])}
             person_dict.update(occupation_dict)
             break
         break
