@@ -15,19 +15,23 @@ def main():
     people = getPeople(mypath)
 
     people_result = list()
-    # for person in people:
-    #     person_dict = dbQueries(person)
-    #     if person_dict == {}:
-    #         print(person + " has empty dict")
-    #     print(person_dict)
-    #     people_result.append(person_dict)
 
-    person_dict = dbQueries("Melinda Gates")
-    people_result.append(person_dict)
+    for person in people:
+        person_dict = dbQueries(person)
+        # if person_dict == {}:
+        #     print(person + " has empty dict")
+        # print(person_dict)
+        people_result.append(person_dict)
 
-    for i in people_result:
+    with open("data.json", 'w') as f:
+        for i in people_result:
+            json.dump(people_result, f, indent=4, sort_keys=False)
+
+    # person_dict = dbQueries("Melinda Gates")
+    # people_result.append(person_dict)
+    
+    # for i in people_result:
         # print(i)
-        json.dump(people_result, indent=4, sort_keys=False)
 
 
 def getPeople(mypath):
