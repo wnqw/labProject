@@ -1,0 +1,4 @@
+
+{ "head": { "link": [], "vars": ["name", "edu", "state"] },
+  "results": { "distinct":  false, "ordered": true, "bindings": [
+    { "name": { "type": "uri", "value": "http://dbpedia.org/resource/Melinda_Gates" }	, "edu": { "type": "uri", "value": "http://dbpedia.org/resource/Duke_University" }	, "state": { "type": "uri", "value": "http://dbpedia.org/resource/North_Carolina" }} ] } }
