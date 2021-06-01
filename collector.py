@@ -26,7 +26,8 @@ def main():
     people_result.append(person_dict)
 
     for i in people_result:
-        print(i)
+        # print(i)
+        json.dump(people_result, indent=4, sort_keys=False)
 
 
 def getPeople(mypath):
@@ -133,6 +134,7 @@ def dbQueries(name):
         break
 
     return person_dict
+
 
 if __name__ == '__main__':
     main()
