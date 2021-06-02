@@ -15,7 +15,7 @@ def main():
     people = getPeople(mypath)
 
     people_result = list()
-    
+
     for person in people:
         person_dict = dbQueries(person)
         print(person_dict)
@@ -26,8 +26,10 @@ def main():
       # for i in people_result:
         # print(i)
 
-    with open("data.json", 'w') as f:
-        json.dump(people_result, f, indent=4, sort_keys=False)
+
+
+    # with open("data.json", 'w') as f:
+    #     json.dump(people_result, f, indent=4, sort_keys=False)
     
 
 
