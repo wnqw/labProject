@@ -1,7 +1,17 @@
 [
     {
-        "name": "Melinda Gates",
-        "occupation": "Co-Chair and Founder,Bill & Melinda Gates Foundation",
+        "name": "German Khan",
+        "occupation": "Entrepreneur, business executive, philanthropist",
         "award": ""
+    },
+    {
+        "name": "Stefano Gabbana",
+        "occupation": "Fashion designer",
+        "award": ""
+    },
+    {
+        "name": "Jeff Hornacek",
+        "occupation": "",
+        "award": "http://dbpedia.org/resource/Utah_Jazz"
     }
 ]
