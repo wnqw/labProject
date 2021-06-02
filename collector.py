@@ -21,15 +21,13 @@ def main():
         print(person_dict)
         people_result.append(person_dict)
 
-    # person_dict = dbQueries("German Khan")
-    # people_result.append(person_dict)
-      # for i in people_result:
-        # print(i)
-
-
-
     # with open("data.json", 'w') as f:
     #     json.dump(people_result, f, indent=4, sort_keys=False)
+
+    # person_dict = dbQueries("German Khan")
+    # people_result.append(person_dict)
+    # for i in people_result:
+    #     print(i)
     
 
 
@@ -109,35 +107,60 @@ def awardQuery(name):
     return response
 
 
-def dbQueries(name):
+def dbQueries(name): #O(1)
     person_dict = {"name": "", "occupation": "", "award": ""}
 
     nameQ = nameQuery(name)
-    for i in nameQ:
-        if i["name"]["value"] != "":
-            name_dict = {"name": name}
-            person_dict.update(name_dict)
-            break
-        else:
-            print("{} name is not listed".format(name))
-            return person_dict
+    if nameQ != []:
+        name_dict = {"name": name}
+        person_dict.update(name_dict)
+    else:
+        print("{} name is not listed".format(name))
+        return person_dict
 
     occupationQ = occupationQuery(name)
-    for j in occupationQ:
-        if j["occupation"]["value"] != "":
-            occupation_dict = {"occupation": j["title"]["value"]}
-            person_dict.update(occupation_dict)
-            break
-        break
+    if occupationQ != []:
+        occupation_dict = {"occupation": occupationQ[0]["title"]["value"]}
+        person_dict.update(occupation_dict)
+
     awardQ = awardQuery(name)
-    for k in awardQ:
-        if k["award"]["value"] != "":
-            award_dict = {"award": k["award"]["value"]}
-            person_dict.update(award_dict)
-            break
-        break
+    if awardQ != []:
+        award_dict = {"award": awardQ[0]["award"]["value"]}
+        person_dict.update(award_dict)
 
     return person_dict
+
+
+
+# def dbQueries(name): #O(n)
+#     person_dict = {"name": "", "occupation": "", "award": ""}
+
+#     nameQ = nameQuery(name)
+#     for i in nameQ:
+#         if i["name"]["value"] != "":
+#             name_dict = {"name": name}
+#             person_dict.update(name_dict)
+#             break
+#         else:
+#             print("{} name is not listed".format(name))
+#             return person_dict
+
+#     occupationQ = occupationQuery(name)
+#     for j in occupationQ:
+#         if j["occupation"]["value"] != "":
+#             occupation_dict = {"occupation": j["title"]["value"]}
+#             person_dict.update(occupation_dict)
+#             break
+#         break
+#     awardQ = awardQuery(name)
+#     for k in awardQ:
+#         if k["award"]["value"] != "":
+#             award_dict = {"award": k["award"]["value"]}
+#             person_dict.update(award_dict)
+#             break
+#         break
+
+#     return person_dict
 
 
 if __name__ == '__main__':
