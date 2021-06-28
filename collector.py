@@ -19,7 +19,7 @@ def main():
     threadPoolSize= 100
 
     #race, gender:
-    # rg_result = getRaceGender(mypath)
+    rg_result = getRaceGender(mypath)
 
     #db pedia:
     db_result = list() 
@@ -30,11 +30,10 @@ def main():
         db_result.append(person_dict)
     
     #json, charts:
-    
-    # with open("raceGenderData.json", 'w') as f:
+    # with open("db_result.json", 'w') as f:
     #     json.dump(db_result, f, indent=4, sort_keys=False)
 
-    # with open("raceGenderData.json", 'w') as f:
+    # with open("rg_result.json", 'w') as f:
     #     json.dump(rg_result, f, indent=4, sort_keys=False)
 
     # person_dict = dbQueries("German Khan")
