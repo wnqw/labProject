@@ -1,6 +1,6 @@
-#!/usr/bin/python
+#!/usr/local/bin/python3
 # -*- coding: utf-8 -*-
-
+import os
 from os import walk
 from os.path import isfile, join
 from os import listdir
@@ -8,28 +8,75 @@ from SPARQLWrapper import SPARQLWrapper, JSON
 import json
 import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
+from deepface import DeepFace
+import threading
+import matplotlib
 
 
 def main():
     mypath = "/Users/wenqingwang/Downloads/data/lfw"
     people = getPeople(mypath)
+    threadPoolSize= 100
 
-    people_result = list()
+    #race, gender:
+    # rg_result = getRaceGender(mypath)
 
+    #db pedia:
+    db_result = list() 
+    # makeThreads(threadPoolSize, dbQueries, "")
     for person in people:
         person_dict = dbQueries(person)
         print(person_dict)
-        people_result.append(person_dict)
+        db_result.append(person_dict)
+    
+    #json, charts:
+    
+    # with open("raceGenderData.json", 'w') as f:
+    #     json.dump(db_result, f, indent=4, sort_keys=False)
 
-    # with open("data.json", 'w') as f:
-    #     json.dump(people_result, f, indent=4, sort_keys=False)
+    # with open("raceGenderData.json", 'w') as f:
+    #     json.dump(rg_result, f, indent=4, sort_keys=False)
 
     # person_dict = dbQueries("German Khan")
     # people_result.append(person_dict)
     # for i in people_result:
     #     print(i)
-    
 
+
+def makeThreads(poolSize, func, arg):
+    pool = []
+    for t in range (poolSize):
+        if len(pool) == poolSize:
+            for t in pool:
+                if not t.is_alive():
+                    try:
+                        t.start()
+                    except RuntimeError:
+                        t = threading.Thread(target=dbQueries, args = arg)
+                        t.start()
+        else:
+            thread = threading.Thread(target=dbQueries, args = arg)
+            pool.append(thread)
+            thread.start()
+
+
+def getRaceGender(mypath):
+    result = list()
+    for (dirpath, dirnames, filenames) in walk(mypath):
+        for filename in filenames:
+            p = os.path.join(dirpath, filename)
+            try:
+                obj = DeepFace.analyze(img_path = p, actions = ['gender', 'race'])
+                raceGenderDict = dict()
+                raceGenderDict["name"] = filename
+                raceGenderDict["gender"] = obj["gender"]
+                raceGenderDict["race"] = obj["race"]
+                result.append(raceGenderDict)
+                print(obj["gender"], obj["race"])
+            except:
+                print("error")
+    return result
+        
 
 
 def getPeople(mypath):
@@ -107,7 +154,7 @@ def awardQuery(name):
     return response
 
 
-def dbQueries(name): #O(1)
+def dbQueries(name): 
     person_dict = {"name": "", "occupation": "", "award": ""}
 
     nameQ = nameQuery(name)
@@ -131,36 +178,6 @@ def dbQueries(name): #O(1)
     return person_dict
 
 
-
-# def dbQueries(name): #O(n)
-#     person_dict = {"name": "", "occupation": "", "award": ""}
-
-#     nameQ = nameQuery(name)
-#     for i in nameQ:
-#         if i["name"]["value"] != "":
-#             name_dict = {"name": name}
-#             person_dict.update(name_dict)
-#             break
-#         else:
-#             print("{} name is not listed".format(name))
-#             return person_dict
-
-#     occupationQ = occupationQuery(name)
-#     for j in occupationQ:
-#         if j["occupation"]["value"] != "":
-#             occupation_dict = {"occupation": j["title"]["value"]}
-#             person_dict.update(occupation_dict)
-#             break
-#         break
-#     awardQ = awardQuery(name)
-#     for k in awardQ:
-#         if k["award"]["value"] != "":
-#             award_dict = {"award": k["award"]["value"]}
-#             person_dict.update(award_dict)
-#             break
-#         break
-
-#     return person_dict
 
 
 if __name__ == '__main__':
