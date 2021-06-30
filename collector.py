@@ -11,52 +11,35 @@ ssl._create_default_https_context = ssl._create_unverified_context
 from deepface import DeepFace
 import threading
 import matplotlib
-
+from multiprocessing.pool import ThreadPool as Pool
 
 def main():
     mypath = "/Users/wenqingwang/Downloads/data/lfw"
     people = getPeople(mypath)
-    threadPoolSize= 100
 
     #race, gender:
-    rg_result = getRaceGender(mypath)
+    # rg_result = getRaceGender(mypath)
 
     #db pedia:
+    poolSize= 1500
+    pool = Pool(poolSize)
     db_result = list() 
-    # makeThreads(threadPoolSize, dbQueries, "")
     for person in people:
-        person_dict = dbQueries(person)
-        print(person_dict)
-        db_result.append(person_dict)
+        pool.apply_async(dbQueries, (person, db_result,))
+    pool.close()
+    pool.join()
     
     #json, charts:
-    # with open("db_result.json", 'w') as f:
-    #     json.dump(db_result, f, indent=4, sort_keys=False)
+    with open("db_result.json", 'w') as f:
+        json.dump(db_result, f, indent=4, sort_keys=False)
 
     # with open("rg_result.json", 'w') as f:
     #     json.dump(rg_result, f, indent=4, sort_keys=False)
 
     # person_dict = dbQueries("German Khan")
     # people_result.append(person_dict)
-    # for i in people_result:
+    # for i in db_result:
     #     print(i)
-
-
-def makeThreads(poolSize, func, arg):
-    pool = []
-    for t in range (poolSize):
-        if len(pool) == poolSize:
-            for t in pool:
-                if not t.is_alive():
-                    try:
-                        t.start()
-                    except RuntimeError:
-                        t = threading.Thread(target=dbQueries, args = arg)
-                        t.start()
-        else:
-            thread = threading.Thread(target=dbQueries, args = arg)
-            pool.append(thread)
-            thread.start()
 
 
 def getRaceGender(mypath):
@@ -153,7 +136,7 @@ def awardQuery(name):
     return response
 
 
-def dbQueries(name): 
+def dbQueries(name, db_result): 
     person_dict = {"name": "", "occupation": "", "award": ""}
 
     nameQ = nameQuery(name)
@@ -174,9 +157,9 @@ def dbQueries(name):
         award_dict = {"award": awardQ[0]["award"]["value"]}
         person_dict.update(award_dict)
 
-    return person_dict
-
-
+    print(person_dict)
+    db_result.append(person_dict)
+    # print(db_result)
 
 
 if __name__ == '__main__':
