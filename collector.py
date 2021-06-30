@@ -18,7 +18,17 @@ def main():
     people = getPeople(mypath)
 
     #race, gender:
-    # rg_result = getRaceGender(mypath)
+    rg_result = getRaceGender(mypath)
+
+    # poolSize= 1500
+    # pool = Pool(poolSize)
+    # rg_result = list()
+    # for (dirpath, dirnames, filenames) in walk(mypath):
+    #     # print(filenames)
+    #     for filename in filenames:
+    #         pool.apply_async(raceGenderWorker, (dirpath, filename, rg_result,))
+    # pool.close()
+    # pool.join()
 
     #db pedia:
     poolSize= 1500
@@ -33,13 +43,24 @@ def main():
     with open("db_result.json", 'w') as f:
         json.dump(db_result, f, indent=4, sort_keys=False)
 
-    # with open("rg_result.json", 'w') as f:
-    #     json.dump(rg_result, f, indent=4, sort_keys=False)
+    with open("rg_result.json", 'w') as f:
+        json.dump(rg_result, f, indent=4, sort_keys=False)
 
-    # person_dict = dbQueries("German Khan")
-    # people_result.append(person_dict)
-    # for i in db_result:
-    #     print(i)
+
+
+
+# def raceGenderWorker(dirpath, filename, result):
+#     p = os.path.join(dirpath, filename)
+#     try:
+#         obj = DeepFace.analyze(img_path = p, actions = ['gender', 'race'])
+#         raceGenderDict = dict()
+#         raceGenderDict["name"] = filename
+#         raceGenderDict["gender"] = obj["gender"]
+#         raceGenderDict["race"] = obj["race"]
+#         result.append(raceGenderDict)
+#         print(obj["gender"], obj["race"])
+#     except:
+#         print("error")
 
 
 def getRaceGender(mypath):
@@ -159,7 +180,6 @@ def dbQueries(name, db_result):
 
     print(person_dict)
     db_result.append(person_dict)
-    # print(db_result)
 
 
 if __name__ == '__main__':
